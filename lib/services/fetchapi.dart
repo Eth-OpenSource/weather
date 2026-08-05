@@ -1,6 +1,7 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
+class WeatherApi {
 Future<dynamic> fetch() async {
   // Fetch current weather from Open-Meteo for Addis Ababa coordinates
   final uri = Uri.https('api.open-meteo.com', '/v1/forecast', {
@@ -14,18 +15,13 @@ Future<dynamic> fetch() async {
 
   try {
     final http.Response response = await http.get(uri);
-    if (response.statusCode == 200) {
-      // final Map<String, dynamic> data = convert.jsonDecode(response.body);
+    if (response.statusCode == 200) { 
       return convert.jsonDecode(response.body) as Map<String, dynamic>;
     } else {
-      return response.statusCode;
+      return {"Status": response.statusCode};
     }
   } catch (e) {
     return {"error": e.toString()};
   }
 }
-
-void main(List<String> args) async {
-  var response =  await fetch();
-  print(response);
 }
